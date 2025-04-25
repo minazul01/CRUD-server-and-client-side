@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./App.css";
 
 function App() {
@@ -9,6 +10,21 @@ const handleSubmit = (event) => {
   const email = form.email.value;
   const formData = {name, email}
   console.log(formData)
+  fetch('http://localhost:5000/users', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data)
+    if(data.insertedId){
+      alert('user added successfully')
+    }
+    form.reset();
+  })
 }
 
   return (
@@ -24,11 +40,12 @@ const handleSubmit = (event) => {
           <br />
           <label htmlFor="">
             email:
-            <input type="email" name="email" id="" />
+            <input type="email" required name="email" id="" />
           </label>
           <br />
           <input type="submit" value="ADD" />
         </form>
+        <Link to='/users'><button>Click user</button></Link>
       </div>
     </>
   );
